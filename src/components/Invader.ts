@@ -6,16 +6,17 @@ const INVADER_SCALE = 1;
 type InvaderProps = {
   ctx: CanvasRenderingContext2D;
   canvas: HTMLCanvasElement;
+  position: Coordinates;
 };
 
 export class Invader {
-  private canvas: HTMLCanvasElement;
+  // private canvas: HTMLCanvasElement;
   private readonly ctx: CanvasRenderingContext2D;
 
-  private velocity: Coordinates = {
-    x: 0,
-    y: 0,
-  };
+  // private velocity: Coordinates = {
+  //   x: 0,
+  //   y: 0,
+  // };
 
   private position: Coordinates = {
     x: 0,
@@ -26,8 +27,8 @@ export class Invader {
   private width = 0;
   private height = 0;
 
-  constructor({ canvas, ctx }: InvaderProps) {
-    this.canvas = canvas;
+  constructor({ ctx, position }: InvaderProps) {
+    // this.canvas = canvas;
     this.ctx = ctx;
 
     const image = new Image();
@@ -36,10 +37,8 @@ export class Invader {
       this.image = image;
       this.width = image.width * INVADER_SCALE;
       this.height = image.height * INVADER_SCALE;
-      const x = this.canvas.width / 2 - this.width / 2;
-      const y = this.canvas.height / 2;
-      this.position = { x, y };
-      this.velocity = { x, y };
+      this.position = { x: position.x, y: position.y };
+      // this.velocity = { x: position.x, y: position.y };
     };
   }
 
@@ -51,9 +50,9 @@ export class Invader {
     }
   };
 
-  update = () => {
-    this.position.x = this.velocity.x;
-    this.position.y = this.velocity.y;
+  update = ({ velocity }: { velocity: Coordinates }) => {
+    this.position.x += velocity.x;
+    this.position.y += velocity.y;
     this.draw();
   };
 }
