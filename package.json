@@ -1,0 +1,42 @@
+{
+  "name": "space-invaders",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack serve --open",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elaineir/space-invaders.git"
+  },
+  "author": "elaineir AI",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elaineir/space-invaders/issues"
+  },
+  "homepage": "https://github.com/elaineir/space-invaders#readme",
+  "engines": {
+    "node": ">= 16.0.0"
+  },
+  "browserslist": [
+    "last 1 version",
+    ">0.5%",
+    "not dead"
+  ],
+  "devDependencies": {
+    "css-loader": "^6.7.1",
+    "css-minimizer-webpack-plugin": "^4.0.0",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.6.1",
+    "prettier": "^2.7.1",
+    "ts-loader": "^9.3.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.9.3"
+  }
+}
