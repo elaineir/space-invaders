@@ -9,16 +9,16 @@ if (canvas) {
   const ctx = canvas.getContext('2d');
 
   if (ctx) {
-    const animateBackground = animate(() => {
+    const player = new Player(canvas, ctx);
+    player.init();
+
+    const animateCanvas = animate(() => {
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+      player.update();
     });
 
-    const player = new Player(canvas, ctx);
-    const animatePlayer = animate(player.draw);
-
-    animateBackground();
-    animatePlayer();
+    animateCanvas();
   }
 }
 
