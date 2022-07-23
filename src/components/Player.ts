@@ -63,14 +63,10 @@ export class Player {
       this.image = image;
       this.width = image.width * PLAYER_SCALE;
       this.height = image.height * PLAYER_SCALE;
-      this.position = {
-        x: this.canvas.width / 2 - this.width / 2,
-        y: this.canvas.height - this.height - BOTTOM_OFFSET,
-      };
-      this.velocity = {
-        x: this.canvas.width / 2 - this.width / 2,
-        y: this.canvas.height - this.height - BOTTOM_OFFSET,
-      };
+      const x = this.canvas.width / 2 - this.width / 2;
+      const y = this.canvas.height - this.height - BOTTOM_OFFSET;
+      this.position = { x, y };
+      this.velocity = { x, y };
     };
   }
 
@@ -84,7 +80,6 @@ export class Player {
         break;
       case KEYBOARD_CONTROLS.FIRE:
         this.fire();
-        console.log(this.projectiles);
     }
   };
 
