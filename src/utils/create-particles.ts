@@ -16,6 +16,7 @@ type createParticlesArgs = {
   color?: string;
   density?: number;
   radius?: number;
+  isFades?: boolean;
 };
 
 export const createParticles = ({
@@ -25,6 +26,7 @@ export const createParticles = ({
   color = '#baa0de',
   density = PARTICLE_DENSITY,
   radius = PARTICLE_RADIUS,
+  isFades = false,
 }: createParticlesArgs) => {
   for (let i = 0; i < density; i++) {
     particles.push(
@@ -38,8 +40,9 @@ export const createParticles = ({
           x: (Math.random() - 0.5) * 2,
           y: (Math.random() - 0.5) * 2,
         },
-        color,
         radius: getRandomNumber(radius),
+        color,
+        isFades,
       })
     );
   }

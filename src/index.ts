@@ -8,6 +8,7 @@ import { InvadersGrid } from './components/InvadersGrid';
 import { SquareProjectile } from './components/SquareProjectile';
 import { Particle } from './components/Particle';
 import { createParticles } from './utils/create-particles';
+import { createStars } from './utils/create-stars';
 
 const MIN_SPAWN_INTERVAL = 500;
 const INVADER_SHOOTING_INTERVAL = 100;
@@ -32,6 +33,8 @@ if (canvas && ctx) {
   const invaderProjectiles: SquareProjectile[] = [];
   const particles: Particle[] = [];
 
+  createStars({ particles, canvas, ctx });
+
   const animateCanvas = animate(() => {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -39,6 +42,12 @@ if (canvas && ctx) {
 
     // render particles
     particles.forEach((particle, index) => {
+      // start repositioning
+      if (particle.position.y - particle.radius >= canvas.height) {
+        particle.position.x = Math.random() * canvas.width;
+        particle.position.y = -particle.radius;
+      }
+
       if (particle.opacity <= 0) {
         particles.splice(index, 1);
       } else {
@@ -61,7 +70,13 @@ if (canvas && ctx) {
         projectile.position.x <= player.position.x + player.width
       ) {
         invaderProjectiles.splice(index, 1);
-        createParticles({ particles, ctx, target: player, color: 'white' });
+        createParticles({
+          particles,
+          ctx,
+          target: player,
+          color: 'white',
+          isFades: true,
+        });
       }
     });
 
@@ -102,7 +117,12 @@ if (canvas && ctx) {
                 const invaderFound = grid.invaders.includes(invader);
                 const projectileFound = player.projectiles.includes(projectile);
                 if (invaderFound && projectileFound) {
-                  createParticles({ ctx, particles, target: invader });
+                  createParticles({
+                    ctx,
+                    particles,
+                    target: invader,
+                    isFades: true,
+                  });
 
                   grid.invaders.splice(invIndex, 1);
                   player.projectiles.splice(projIndex, 1);

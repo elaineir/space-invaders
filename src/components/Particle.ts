@@ -6,6 +6,7 @@ type ParticleProps = {
   velocity: Coordinates;
   radius: number;
   color: string;
+  isFades?: boolean;
 };
 
 export class Particle {
@@ -16,6 +17,8 @@ export class Particle {
     y: 0,
   };
 
+  private isFades: boolean;
+
   public position: Coordinates = {
     x: 0,
     y: 0,
@@ -25,12 +28,13 @@ export class Particle {
   public color: string;
   public opacity = 1;
 
-  constructor({ position, velocity, ctx, radius, color }: ParticleProps) {
+  constructor({ position, velocity, ctx, radius, color, isFades }: ParticleProps) {
     this.ctx = ctx;
     this.position = position;
     this.velocity = velocity;
     this.radius = radius;
     this.color = color;
+    this.isFades = isFades ?? false;
   }
 
   draw = () => {
@@ -48,6 +52,8 @@ export class Particle {
     this.draw();
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
-    this.opacity -= 0.01;
+    if (this.isFades) {
+      this.opacity -= 0.01;
+    }
   };
 }
