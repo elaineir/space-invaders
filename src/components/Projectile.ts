@@ -13,7 +13,7 @@ export class Projectile implements IProjectile {
     y: 0,
   };
 
-  public radius = 3;
+  public radius = 4;
 
   constructor({ position, velocity, ctx }: ProjectileProps) {
     this.ctx = ctx;

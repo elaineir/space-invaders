@@ -12,12 +12,12 @@ export class Grid {
   private canvas: HTMLCanvasElement;
   // private readonly ctx: CanvasRenderingContext2D;
 
-  private position: Coordinates = {
+  public position: Coordinates = {
     x: 0,
     y: 0,
   };
 
-  private width: number;
+  public width: number;
 
   public velocity: Coordinates = {
     x: 2,

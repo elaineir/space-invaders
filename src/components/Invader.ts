@@ -18,14 +18,14 @@ export class Invader {
   //   y: 0,
   // };
 
-  private position: Coordinates = {
+  private image: HTMLImageElement | null = null;
+  public width = 0;
+  public height = 0;
+
+  public position: Coordinates = {
     x: 0,
     y: 0,
   };
-
-  private image: HTMLImageElement | null = null;
-  private width = 0;
-  private height = 0;
 
   constructor({ ctx, position }: InvaderProps) {
     // this.canvas = canvas;
