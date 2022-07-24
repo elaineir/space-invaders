@@ -6,40 +6,136 @@ import { GameType } from './index.types';
 import { createParticles } from './utils/create-particles';
 import { getRandomNumber } from './utils/get-random-number';
 
+// TODO make class with private props
 const GAME: GameType = {
   OVER: false,
-  RUN: true,
+  RUN: false,
+  SCORE: 0,
   MIN_SPAWN_INTERVAL: 500,
   INVADER_SHOOTING_INTERVAL: 100,
 };
 
+const LEVELS = {
+  EASY: {
+    MIN_SPAWN_INTERVAL: 500,
+    INVADER_SHOOTING_INTERVAL: 200,
+  },
+  MEDIUM: {
+    MIN_SPAWN_INTERVAL: 400,
+    INVADER_SHOOTING_INTERVAL: 100,
+  },
+  HARD: {
+    MIN_SPAWN_INTERVAL: 300,
+    INVADER_SHOOTING_INTERVAL: 70,
+  },
+  INSANE: {
+    MIN_SPAWN_INTERVAL: 200,
+    INVADER_SHOOTING_INTERVAL: 30,
+  },
+};
+
+export type LevelType = keyof typeof LEVELS;
+
 type GameArgs = {
   ctx: CanvasRenderingContext2D;
-  canvas: HTMLCanvasElement;
+  $canvas: HTMLCanvasElement;
   player: Player;
   particles: Particle[];
   GAME: GameType;
+  $scoreElement: HTMLElement;
+  $endGamePopup: HTMLElement;
+  $finalScoreElement: HTMLElement;
+  $maxScoreElement: HTMLElement;
+};
+
+type finishGameArgs = {
+  player: Player;
+  $finalScoreElement: HTMLElement;
+  $endGamePopup: HTMLElement;
+  $maxScoreElement: HTMLElement;
+};
+
+type addScoreArgs = {
+  score: number;
+  $scoreElement: HTMLElement;
 };
 
 let frames = 0;
-let score = 0;
-const $scoreElement = document.querySelector('#scoreCounter');
 let spawnInterval = getRandomNumber(GAME.MIN_SPAWN_INTERVAL) + GAME.MIN_SPAWN_INTERVAL;
-const invadersGrids: InvadersGrid[] = [];
-const invaderProjectiles: SquareProjectile[] = [];
+let invadersGrids: InvadersGrid[] = [];
+let invaderProjectiles: SquareProjectile[] = [];
 
 export const getGameSettings = (): GameType => GAME;
 
-export const renderGame = ({ ctx, canvas, player, particles, GAME }: GameArgs) => {
-  ctx.fillStyle = 'black';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+export const resetScore = ($scoreElement: HTMLElement) => {
+  GAME.SCORE = 0;
+  $scoreElement.textContent = '0';
+};
+
+export const setLevel = (level: LevelType) => {
+  GAME.MIN_SPAWN_INTERVAL = LEVELS[level].MIN_SPAWN_INTERVAL;
+  GAME.INVADER_SHOOTING_INTERVAL = LEVELS[level].INVADER_SHOOTING_INTERVAL;
+};
+
+/** Stop and reset the game */
+const finishGame = ({
+  player,
+  $endGamePopup,
+  $finalScoreElement,
+  $maxScoreElement,
+}: finishGameArgs) => {
+  GAME.OVER = true;
+  player.setInactive();
+  const maxScore = localStorage.getItem('maxScore') ?? '0';
+  const isMaxedScore = +maxScore < GAME.SCORE;
+  const currentScore = GAME.SCORE.toString();
+
+  setTimeout(() => {
+    GAME.RUN = false;
+    $finalScoreElement.textContent = currentScore;
+    $maxScoreElement.textContent = isMaxedScore ? currentScore : maxScore;
+    if (isMaxedScore) {
+      localStorage.setItem('maxScore', currentScore);
+    }
+    $endGamePopup.classList.add('popup_opened');
+
+    spawnInterval = GAME.MIN_SPAWN_INTERVAL;
+    invadersGrids = [];
+    invaderProjectiles = [];
+    player.projectiles = [];
+  }, 2000);
+};
+
+/** Add score and render it in scoreElement */
+const addScore = ({ score, $scoreElement }: addScoreArgs) => {
+  GAME.SCORE += score;
+
+  if ($scoreElement) {
+    $scoreElement.textContent = GAME.SCORE.toString();
+  }
+};
+
+/** Render game and calc all mechanics */
+export const renderGame = ({
+  ctx,
+  $canvas,
+  $scoreElement,
+  $endGamePopup,
+  $finalScoreElement,
+  $maxScoreElement,
+  player,
+  particles,
+  GAME,
+}: GameArgs) => {
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, $canvas.width, $canvas.height);
   player.update();
 
   // render particles
   particles.forEach((particle, index) => {
     // start repositioning
-    if (particle.position.y - particle.radius >= canvas.height) {
-      particle.position.x = Math.random() * canvas.width;
+    if (particle.position.y - particle.radius >= $canvas.height) {
+      particle.position.x = Math.random() * $canvas.width;
       particle.position.y = -particle.radius;
     }
 
@@ -52,7 +148,7 @@ export const renderGame = ({ ctx, canvas, player, particles, GAME }: GameArgs) =
 
   // render invader shooting
   invaderProjectiles.forEach((projectile, index) => {
-    if (projectile.position.y + projectile.height >= canvas.height) {
+    if (projectile.position.y + projectile.height >= $canvas.height) {
       invaderProjectiles.splice(index, 1);
     } else {
       projectile.update();
@@ -65,19 +161,21 @@ export const renderGame = ({ ctx, canvas, player, particles, GAME }: GameArgs) =
       projectile.position.x <= player.position.x + player.width
     ) {
       invaderProjectiles.splice(index, 1);
-      player.setInactive();
+
       createParticles({
         particles,
         ctx,
         target: player,
-        color: 'white',
+        color: '#fff',
         isFades: true,
       });
-      GAME.OVER = true;
 
-      setTimeout(() => {
-        GAME.RUN = false;
-      }, 2000);
+      finishGame({
+        player,
+        $endGamePopup,
+        $finalScoreElement,
+        $maxScoreElement,
+      });
     }
   });
 
@@ -136,11 +234,7 @@ export const renderGame = ({ ctx, canvas, player, particles, GAME }: GameArgs) =
                 } else {
                   invadersGrids.splice(gridIndex, 1);
                 }
-                score += 50;
-
-                if ($scoreElement) {
-                  $scoreElement.textContent = score.toString();
-                }
+                addScore({ score: 50, $scoreElement });
               }
             }, 0);
           }
@@ -153,7 +247,7 @@ export const renderGame = ({ ctx, canvas, player, particles, GAME }: GameArgs) =
   if (frames % spawnInterval === 0) {
     invadersGrids.push(
       new InvadersGrid({
-        canvas,
+        canvas: $canvas,
         ctx,
       })
     );

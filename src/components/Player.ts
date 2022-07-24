@@ -63,10 +63,6 @@ export class Player {
       this.image = image;
       this.width = image.width * PLAYER_SCALE;
       this.height = image.height * PLAYER_SCALE;
-      const x = this.canvas.width / 2 - this.width / 2;
-      const y = this.canvas.height - this.height - BOTTOM_OFFSET;
-      this.position = { x, y };
-      this.velocity = { x, y };
     };
   }
 
@@ -118,7 +114,7 @@ export class Player {
         },
         velocity: {
           x: 0,
-          y: -5,
+          y: -8,
         },
         ctx: this.ctx,
       })
@@ -143,7 +139,15 @@ export class Player {
     this.draw();
   };
 
+  setInitialCoordinates = () => {
+    const x = this.canvas.width / 2 - this.width / 2;
+    const y = this.canvas.height - this.height - BOTTOM_OFFSET;
+    this.position = { x, y };
+    this.velocity = { x, y };
+  };
+
   init = () => {
+    this.setInitialCoordinates();
     window.addEventListener('keydown', this.onKeyDown);
     window.addEventListener('keyup', this.onKeyUp);
     this.opacity = 1;

@@ -1,6 +1,9 @@
+export type Nullable<T> = T | null;
+
 export type GameType = {
   OVER: boolean;
   RUN: boolean;
+  SCORE: number;
   MIN_SPAWN_INTERVAL: number;
   INVADER_SHOOTING_INTERVAL: number;
 };
