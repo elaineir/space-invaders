@@ -1,4 +1,4 @@
-import { Coordinates } from '../types';
+import { Coordinates } from '../index.types';
 import invader from '../assets/images/invader.png';
 
 const INVADER_SCALE = 1;

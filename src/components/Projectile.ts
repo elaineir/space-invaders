@@ -1,4 +1,4 @@
-import { Coordinates, IProjectile, ProjectileProps } from '../types';
+import { Coordinates, IProjectile, ProjectileProps } from '../index.types';
 
 export class Projectile implements IProjectile {
   private ctx: CanvasRenderingContext2D;

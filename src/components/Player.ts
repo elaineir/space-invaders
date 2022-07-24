@@ -1,4 +1,4 @@
-import { Coordinates, IProjectile, ProjectileProps } from '../types';
+import { Coordinates, IProjectile, ProjectileProps } from '../index.types';
 import spaceship from '../assets/images/spaceship.png';
 
 const PLAYER_SCALE = 0.15;

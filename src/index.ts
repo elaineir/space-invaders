@@ -1,7 +1,7 @@
 import './index.css';
 import { Player } from './components/Player';
 import { Projectile } from './components/Projectile';
-import { IProjectile, ProjectileProps } from './types';
+import { IProjectile, ProjectileProps } from './index.types';
 import { animate } from './utils/animate';
 import { Grid } from './components/Grid';
 
