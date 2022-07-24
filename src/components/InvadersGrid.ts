@@ -1,5 +1,6 @@
-import { Coordinates } from '../index.types';
+import { Coordinates, ProjectileProps } from '../index.types';
 import { Invader } from './Invader';
+import { SquareProjectile } from './SquareProjectile';
 
 const INVADER_SIZE = 30;
 
@@ -8,9 +9,8 @@ type GridProps = {
   canvas: HTMLCanvasElement;
 };
 
-export class Grid {
+export class InvadersGrid {
   private canvas: HTMLCanvasElement;
-  // private readonly ctx: CanvasRenderingContext2D;
 
   public position: Coordinates = {
     x: 0,
@@ -28,7 +28,6 @@ export class Grid {
 
   constructor({ canvas, ctx }: GridProps) {
     this.canvas = canvas;
-    // this.ctx = ctx;
 
     const columns = Math.floor(Math.random() * 10 + 5);
     const rows = Math.floor(Math.random() * 5 + 2);
@@ -44,6 +43,7 @@ export class Grid {
               x: x * INVADER_SIZE,
               y: y * INVADER_SIZE,
             },
+            createProjectile: (config: ProjectileProps) => new SquareProjectile(config),
           })
         );
       }

@@ -5,9 +5,17 @@ export type Coordinates = {
 
 export interface IProjectile {
   position: Coordinates;
-  radius: number;
   draw: () => void;
   update: () => void;
+}
+
+export interface ICircleProjectile extends IProjectile {
+  radius: number;
+}
+
+export interface ISquareProjectile extends IProjectile {
+  width: number;
+  height: number;
 }
 
 export type ProjectileProps = {

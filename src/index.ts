@@ -1,10 +1,14 @@
 import './index.css';
 import { Player } from './components/Player';
-import { Projectile } from './components/Projectile';
-import { Grid } from './components/Grid';
-import { IProjectile, ProjectileProps } from './index.types';
+import { ProjectileProps } from './index.types';
 import { animate } from './utils/animate';
-import { getRandomInterval } from './utils/get-random-interval';
+import { getRandomNumber } from './utils/get-random-number';
+import { CircleProjectile } from './components/CircleProjectile';
+import { InvadersGrid } from './components/InvadersGrid';
+import { SquareProjectile } from './components/SquareProjectile';
+
+const MIN_SPAWN_INTERVAL = 500;
+const INVADER_SHOOTING_INTERVAL = 100;
 
 const canvas: HTMLCanvasElement | null = document.querySelector('.canvas');
 const ctx = canvas?.getContext('2d');
@@ -14,39 +18,64 @@ if (canvas && ctx) {
   canvas.height = innerHeight;
 
   let frames = 0;
-  let spawnInterval = getRandomInterval(500);
-
-  const projectiles: IProjectile[] = [];
+  let spawnInterval = getRandomNumber(MIN_SPAWN_INTERVAL) + MIN_SPAWN_INTERVAL;
 
   const player = new Player({
     canvas,
     ctx,
-    projectiles,
-    createProjectile: (config: ProjectileProps) => new Projectile(config),
+    createProjectile: (config: ProjectileProps) => new CircleProjectile(config),
   });
 
-  const grids: Grid[] = [];
+  const invadersGrids: InvadersGrid[] = [];
+  const invaderProjectiles: SquareProjectile[] = [];
 
   const animateCanvas = animate(() => {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     player.update();
 
-    projectiles.forEach((projectile, index) => {
+    // render invader shooting
+    invaderProjectiles.forEach((projectile, index) => {
+      if (projectile.position.y + projectile.height >= canvas.height) {
+        invaderProjectiles.splice(index, 1);
+      } else {
+        projectile.update();
+      }
+
+      // player collisions
+      if (
+        projectile.position.y + projectile.height >= player.position.y &&
+        projectile.position.x + projectile.width >= player.position.x &&
+        projectile.position.x <= player.position.x + player.width
+      ) {
+        console.log('loser');
+      }
+    });
+
+    // render player shooting
+    player.projectiles.forEach((projectile, index) => {
       if (projectile.position.y + projectile.radius <= 0) {
-        projectiles.splice(index, 1);
+        player.projectiles.splice(index, 1);
       } else {
         projectile.update();
       }
     });
 
-    if (grids.length > 0) {
-      grids.forEach((grid, gridIndex) => {
+    if (invadersGrids.length > 0) {
+      invadersGrids.forEach((grid, gridIndex) => {
         grid.update();
+
+        // spawn projectiles
+        if (frames % INVADER_SHOOTING_INTERVAL === 0 && grid.invaders.length > 0) {
+          const randomIndex = getRandomNumber(grid.invaders.length);
+          grid.invaders[randomIndex].shoot(invaderProjectiles);
+        }
+
+        // handle player shooting and enemies movement
         grid.invaders.forEach((invader, invIndex) => {
           invader.update({ velocity: grid.velocity });
 
-          projectiles.forEach((projectile, projIndex) => {
+          player.projectiles.forEach((projectile, projIndex) => {
             if (
               projectile.position.y - projectile.radius <= invader.position.y + invader.height &&
               projectile.position.x + projectile.radius >= invader.position.x &&
@@ -54,11 +83,11 @@ if (canvas && ctx) {
               projectile.position.y + projectile.radius >= invader.position.y
             ) {
               setTimeout(() => {
-                const invaderFound = grid.invaders.find((alien) => alien === invader);
-                const projectileFound = projectiles.find((proj) => proj === projectile);
+                const invaderFound = grid.invaders.includes(invader);
+                const projectileFound = player.projectiles.includes(projectile);
                 if (invaderFound && projectileFound) {
                   grid.invaders.splice(invIndex, 1);
-                  projectiles.splice(projIndex, 1);
+                  player.projectiles.splice(projIndex, 1);
 
                   if (grid.invaders.length > 0) {
                     const firstInvader = grid.invaders[0];
@@ -67,7 +96,7 @@ if (canvas && ctx) {
                       lastInvader.position.x - firstInvader.position.x + lastInvader.width;
                     grid.position.x = firstInvader.position.x;
                   } else {
-                    grids.splice(gridIndex, 1);
+                    invadersGrids.splice(gridIndex, 1);
                   }
                 }
               }, 0);
@@ -77,10 +106,16 @@ if (canvas && ctx) {
       });
     }
 
+    // spawn enemies
     if (frames % spawnInterval === 0) {
-      grids.push(new Grid({ canvas, ctx }));
+      invadersGrids.push(
+        new InvadersGrid({
+          canvas,
+          ctx,
+        })
+      );
       frames = 0;
-      spawnInterval = getRandomInterval(500);
+      spawnInterval = getRandomNumber(MIN_SPAWN_INTERVAL) + MIN_SPAWN_INTERVAL;
     }
 
     frames++;

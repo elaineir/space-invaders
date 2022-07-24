@@ -1,4 +1,4 @@
-import { Coordinates, IProjectile, ProjectileProps } from '../index.types';
+import { Coordinates, ICircleProjectile, ProjectileProps } from '../index.types';
 import spaceship from '../assets/images/spaceship.png';
 
 const PLAYER_SCALE = 0.15;
@@ -15,8 +15,7 @@ const KEYBOARD_CONTROLS = {
 type PlayerProps = {
   ctx: CanvasRenderingContext2D;
   canvas: HTMLCanvasElement;
-  createProjectile: (config: ProjectileProps) => IProjectile;
-  projectiles: IProjectile[];
+  createProjectile: (config: ProjectileProps) => ICircleProjectile;
 };
 
 export class Player {
@@ -24,11 +23,6 @@ export class Player {
   private readonly ctx: CanvasRenderingContext2D;
 
   private velocity: Coordinates = {
-    x: 0,
-    y: 0,
-  };
-
-  private position: Coordinates = {
     x: 0,
     y: 0,
   };
@@ -45,16 +39,22 @@ export class Player {
   private rotation = 0;
 
   private image: HTMLImageElement | null = null;
-  private width = 0;
-  private height = 0;
 
-  private projectiles: IProjectile[];
-  private readonly createProjectile: (config: ProjectileProps) => IProjectile;
+  private readonly createProjectile: (config: ProjectileProps) => ICircleProjectile;
 
-  constructor({ canvas, ctx, projectiles, createProjectile }: PlayerProps) {
+  public position: Coordinates = {
+    x: 0,
+    y: 0,
+  };
+
+  public width = 0;
+  public height = 0;
+
+  public projectiles: ICircleProjectile[] = [];
+
+  constructor({ canvas, ctx, createProjectile }: PlayerProps) {
     this.canvas = canvas;
     this.ctx = ctx;
-    this.projectiles = projectiles;
     this.createProjectile = createProjectile;
 
     const image = new Image();
@@ -79,7 +79,7 @@ export class Player {
         this.keys[KEYBOARD_CONTROLS.RIGHT].pressed = true;
         break;
       case KEYBOARD_CONTROLS.FIRE:
-        this.fire();
+        this.shoot();
     }
   };
 
@@ -109,7 +109,7 @@ export class Player {
     }
   };
 
-  private fire = () => {
+  private shoot = () => {
     this.projectiles.push(
       this.createProjectile({
         position: {
@@ -126,8 +126,6 @@ export class Player {
   };
 
   draw = () => {
-    // this.ctx.fillStyle = 'red';
-    // this.ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
     if (this.image && this.width && this.height) {
       this.ctx.save();
 
