@@ -1,9 +1,10 @@
 import './index.css';
 import { Player } from './components/Player';
 import { Projectile } from './components/Projectile';
+import { Grid } from './components/Grid';
 import { IProjectile, ProjectileProps } from './index.types';
 import { animate } from './utils/animate';
-import { Grid } from './components/Grid';
+import { getRandomInterval } from './utils/get-random-interval';
 
 const canvas: HTMLCanvasElement | null = document.querySelector('.canvas');
 const ctx = canvas?.getContext('2d');
@@ -11,6 +12,9 @@ const ctx = canvas?.getContext('2d');
 if (canvas && ctx) {
   canvas.width = innerWidth;
   canvas.height = innerHeight;
+
+  let frames = 0;
+  let spawnInterval = getRandomInterval(500);
 
   const projectiles: IProjectile[] = [];
 
@@ -21,7 +25,7 @@ if (canvas && ctx) {
     createProjectile: (config: ProjectileProps) => new Projectile(config),
   });
 
-  const grids = [new Grid({ ctx, canvas })];
+  const grids: Grid[] = [];
 
   const animateCanvas = animate(() => {
     ctx.fillStyle = 'black';
@@ -36,14 +40,22 @@ if (canvas && ctx) {
       }
     });
 
-    grids.forEach((grid) => {
-      grid.update();
-      grid.invaders.forEach((invader) => invader.update({ velocity: grid.velocity }));
-    });
+    if (grids.length > 0) {
+      grids.forEach((grid) => {
+        grid.update();
+        grid.invaders.forEach((invader) => invader.update({ velocity: grid.velocity }));
+      });
+    }
+
+    if (frames % spawnInterval === 0) {
+      grids.push(new Grid({ canvas, ctx }));
+      frames = 0;
+      spawnInterval = getRandomInterval(500);
+    }
+
+    frames++;
   });
 
   player.init();
   animateCanvas();
-
-  console.log(grids[0]);
 }
