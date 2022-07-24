@@ -22,6 +22,8 @@ type GameArgs = {
 };
 
 let frames = 0;
+let score = 0;
+const $scoreElement = document.querySelector('#scoreCounter');
 let spawnInterval = getRandomNumber(GAME.MIN_SPAWN_INTERVAL) + GAME.MIN_SPAWN_INTERVAL;
 const invadersGrids: InvadersGrid[] = [];
 const invaderProjectiles: SquareProjectile[] = [];
@@ -133,6 +135,11 @@ export const renderGame = ({ ctx, canvas, player, particles, GAME }: GameArgs) =
                   grid.position.x = firstInvader.position.x;
                 } else {
                   invadersGrids.splice(gridIndex, 1);
+                }
+                score += 50;
+
+                if ($scoreElement) {
+                  $scoreElement.textContent = score.toString();
                 }
               }
             }, 0);

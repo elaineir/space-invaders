@@ -1,0 +1,17 @@
+.score {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100px;
+  padding: 10px;
+  background-color: rgba(26, 26, 26, 0.7);
+  border-radius: 0 0 20px 0;
+}
+
+.score__paragraph {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.2;
+  color: white;
+}
