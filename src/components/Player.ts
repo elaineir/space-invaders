@@ -36,9 +36,9 @@ export class Player {
     },
   };
 
-  private rotation = 0;
-
   private image: HTMLImageElement | null = null;
+  private opacity = 1;
+  private rotation = 0;
 
   private readonly createProjectile: (config: ProjectileProps) => ICircleProjectile;
 
@@ -128,7 +128,7 @@ export class Player {
   draw = () => {
     if (this.image && this.width && this.height) {
       this.ctx.save();
-
+      this.ctx.globalAlpha = this.opacity;
       this.ctx.translate(this.position.x + this.width / 2, this.position.y + this.height / 2);
       this.ctx.rotate(this.rotation);
       this.ctx.translate(-this.position.x - this.width / 2, -this.position.y - this.height / 2);
@@ -146,5 +146,12 @@ export class Player {
   init = () => {
     window.addEventListener('keydown', this.onKeyDown);
     window.addEventListener('keyup', this.onKeyUp);
+    this.opacity = 1;
+  };
+
+  setInactive = () => {
+    window.removeEventListener('keydown', this.onKeyDown);
+    window.removeEventListener('keyup', this.onKeyUp);
+    this.opacity = 0;
   };
 }

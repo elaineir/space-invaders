@@ -1,3 +1,10 @@
+export type GameType = {
+  OVER: boolean;
+  RUN: boolean;
+  MIN_SPAWN_INTERVAL: number;
+  INVADER_SHOOTING_INTERVAL: number;
+};
+
 export type Coordinates = {
   x: number;
   y: number;
