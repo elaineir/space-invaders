@@ -1,0 +1,8 @@
+@import url('./blocks/root/root.css');
+@import url('./blocks/canvas/canvas.css');
+@import url('./blocks/score/score.css');
+@import url('./blocks/popup/popup.css');
+@import url('./blocks/accent/accent.css');
+@import url('./blocks/scale-hover/scale-hover.css');
+@import url('./blocks/vibrate-hover/vibrate-hover.css');
+@import url('./blocks/focus-in/focus-in.css');

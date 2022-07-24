@@ -1,0 +1,15 @@
+@keyframes focus-in {
+  0% {
+    filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+
+.focus-in {
+  opacity: 0;
+  animation: focus-in 1s ease-in-out 0.3s forwards;
+}
