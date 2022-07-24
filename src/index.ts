@@ -3,7 +3,7 @@ import { Player } from './components/Player';
 import { CircleProjectile } from './components/CircleProjectile';
 import { Particle } from './components/Particle';
 import { Nullable, ProjectileProps } from './index.types';
-import { getGameSettings, LevelType, renderGame, resetScore, setLevel } from './game';
+import { getGameSettings, DifficultyType, renderGame, resetScore, setDifficulty } from './game';
 import { animate } from './utils/animate';
 import { createStars } from './utils/create-stars';
 
@@ -46,8 +46,8 @@ if (
 
   function startGame(evt: Event) {
     const target = evt.target as HTMLButtonElement;
-    const level = (target.dataset.level as LevelType) ?? 'EASY';
-    setLevel(level);
+    const difficulty = (target.dataset.difficulty as DifficultyType) ?? 'EASY';
+    setDifficulty(difficulty);
     $startUpPopup?.classList.remove('popup_opened');
     runGame();
   }

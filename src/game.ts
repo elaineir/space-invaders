@@ -15,7 +15,7 @@ const GAME: GameType = {
   INVADER_SHOOTING_INTERVAL: 100,
 };
 
-const LEVELS = {
+const DIFFICULTY = {
   EASY: {
     MIN_SPAWN_INTERVAL: 500,
     INVADER_SHOOTING_INTERVAL: 200,
@@ -34,7 +34,7 @@ const LEVELS = {
   },
 };
 
-export type LevelType = keyof typeof LEVELS;
+export type DifficultyType = keyof typeof DIFFICULTY;
 
 type GameArgs = {
   ctx: CanvasRenderingContext2D;
@@ -72,9 +72,9 @@ export const resetScore = ($scoreElement: HTMLElement) => {
   $scoreElement.textContent = '0';
 };
 
-export const setLevel = (level: LevelType) => {
-  GAME.MIN_SPAWN_INTERVAL = LEVELS[level].MIN_SPAWN_INTERVAL;
-  GAME.INVADER_SHOOTING_INTERVAL = LEVELS[level].INVADER_SHOOTING_INTERVAL;
+export const setDifficulty = (difficulty: DifficultyType) => {
+  GAME.MIN_SPAWN_INTERVAL = DIFFICULTY[difficulty].MIN_SPAWN_INTERVAL;
+  GAME.INVADER_SHOOTING_INTERVAL = DIFFICULTY[difficulty].INVADER_SHOOTING_INTERVAL;
 };
 
 /** Stop and reset the game */
