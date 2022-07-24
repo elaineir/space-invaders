@@ -10,7 +10,7 @@ export class SquareProjectile extends Projectile {
   }
 
   draw = () => {
-    this.ctx.fillStyle = 'white';
+    this.ctx.fillStyle = 'yellow';
     this.ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   };
 }
