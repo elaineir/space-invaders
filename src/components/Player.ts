@@ -78,9 +78,6 @@ export class Player {
       case KEYBOARD_CONTROLS.FIRE:
         this.shoot();
         break;
-      default:
-        this.keys[KEYBOARD_CONTROLS.LEFT].pressed = false;
-        this.keys[KEYBOARD_CONTROLS.RIGHT].pressed = false;
     }
   };
 
