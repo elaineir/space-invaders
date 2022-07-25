@@ -3,7 +3,7 @@ import spaceship from '../assets/images/spaceship.svg';
 
 const PLAYER_SCALE = 0.15;
 const BOTTOM_OFFSET = 20;
-const PLAYER_SPEED = 8;
+const PLAYER_SPEED = 7;
 const ROTATION_ANGLE = 0.15;
 
 const KEYBOARD_CONTROLS = {

@@ -20,7 +20,7 @@ export class InvadersGrid {
   public width: number;
 
   public velocity: Coordinates = {
-    x: 2,
+    x: 3,
     y: 0,
   };
 
