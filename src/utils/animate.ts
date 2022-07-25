@@ -7,9 +7,9 @@ type AnimateArgs = {
 
 export const animate = ({ game, callback }: AnimateArgs) => {
   return function anim() {
-    if (!game.RUN) return;
-
+    if (game.RUN) {
+      callback();
+    }
     requestAnimationFrame(anim);
-    callback();
   };
 };

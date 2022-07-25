@@ -3,7 +3,7 @@ import spaceship from '../assets/images/spaceship.png';
 
 const PLAYER_SCALE = 0.15;
 const BOTTOM_OFFSET = 20;
-const PLAYER_SPEED = 5;
+const PLAYER_SPEED = 8;
 const ROTATION_ANGLE = 0.15;
 
 const KEYBOARD_CONTROLS = {
@@ -63,6 +63,7 @@ export class Player {
       this.image = image;
       this.width = image.width * PLAYER_SCALE;
       this.height = image.height * PLAYER_SCALE;
+      this.setInitialCoordinates();
     };
   }
 
@@ -76,6 +77,10 @@ export class Player {
         break;
       case KEYBOARD_CONTROLS.FIRE:
         this.shoot();
+        break;
+      default:
+        this.keys[KEYBOARD_CONTROLS.LEFT].pressed = false;
+        this.keys[KEYBOARD_CONTROLS.RIGHT].pressed = false;
     }
   };
 
@@ -114,7 +119,7 @@ export class Player {
         },
         velocity: {
           x: 0,
-          y: -8,
+          y: -10,
         },
         ctx: this.ctx,
       })
@@ -147,7 +152,6 @@ export class Player {
   };
 
   init = () => {
-    this.setInitialCoordinates();
     window.addEventListener('keydown', this.onKeyDown);
     window.addEventListener('keyup', this.onKeyUp);
     this.opacity = 1;

@@ -1,56 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Space invaders</title>
-  </head>
-  <body class="root">
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Space invaders</title>
+</head>
+<body class="root">
+<noscript>You need to enable JavaScript to run this app.</noscript>
 
-    <div id="startUpPopup" class="popup popup_opened">
-      <div class="popup__container focus-in">
-        <h2 class="popup__title accent">&#128126; SPACE INVADERS &#128126;</h2>
-        <p class="popup__subtitle">Please, select the game difficulty:</p>
-        <div id="levelButtons" class="popup__buttons-group">
-          <button data-difficulty="EASY" type="button" class="popup__button scale-hover">EASY</button>
-          <button data-difficulty="MEDIUM" type="button" class="popup__button scale-hover">
-            MEDIUM
-          </button>
-          <button data-difficulty="HARD" type="button" class="popup__button scale-hover">HARD</button>
-          <button data-difficulty="INSANE" type="button" class="popup__button vibrate-hover">
-            INSANE
-          </button>
-        </div>
-      </div>
+<div id="startUpPopup" class="popup popup_opened">
+  <div class="popup__container focus-in">
+    <h2 class="popup__title accent">&#128126; SPACE INVADERS &#128126;</h2>
+    <p class="popup__subtitle">Please, select the game difficulty:</p>
+    <div id="levelButtons" class="popup__buttons-group">
+      <button data-difficulty="EASY" type="button"
+              class="popup__button scale-hover">EASY
+      </button>
+      <button data-difficulty="MEDIUM" type="button"
+              class="popup__button scale-hover">
+        MEDIUM
+      </button>
+      <button data-difficulty="HARD" type="button"
+              class="popup__button scale-hover">HARD
+      </button>
+      <button data-difficulty="INSANE" type="button"
+              class="popup__button vibrate-hover">
+        INSANE
+      </button>
     </div>
+    <p class="popup__subtitle">Press
+      <span class="accent">A</span> to move left, <span class="accent">D</span>
+      to move right, <span class="accent">SPACE</span> to fire
+    </p>
+  </div>
+</div>
 
-    <div id="endGamePopup" class="popup">
-      <div class="popup__container focus-in">
-        <h2 class="popup__title accent">GAME OVER</h2>
-        <p class="popup__subtitle">
-          Your current score:
-          <span id="finalScore"></span>
-        </p>
-        <p class="popup__subtitle">
-          Max score:
-          <span id="maxScore" class="accent"></span>
-        </p>
-        <div class="popup__buttons-group">
-          <button id="playAgain" type="button" class="popup__button scale-hover">Play again</button>
-          <button id="toMainScreen" type="button" class="popup__button scale-hover">
-            Back to menu
-          </button>
-        </div>
-      </div>
+<div id="endGamePopup" class="popup">
+  <div class="popup__container focus-in">
+    <h2 class="popup__title accent">GAME OVER</h2>
+    <p class="popup__subtitle">
+      Your current score:
+      <span id="finalScore"></span>
+    </p>
+    <p class="popup__subtitle">
+      Max score:
+      <span id="maxScore" class="accent"></span>
+    </p>
+    <div class="popup__buttons-group">
+      <button id="playAgain" type="button" class="popup__button scale-hover">
+        Play again
+      </button>
+      <button id="toMainScreen" type="button" class="popup__button scale-hover">
+        Back to menu
+      </button>
     </div>
+  </div>
+</div>
 
-    <div class="score">
-      <p class="score__paragraph">
-        <span class="score__text">Score: </span>
-        <span id="scoreCounter" class="score__value">0</span>
-      </p>
-    </div>
-    <canvas class="canvas"></canvas>
-  </body>
+<div class="score">
+  <p class="score__paragraph">
+    <span class="score__text">Score: </span>
+    <span id="scoreCounter" class="score__value">0</span>
+  </p>
+</div>
+<canvas class="canvas"></canvas>
+</body>
 </html>

@@ -3,7 +3,7 @@ import { Player } from './components/Player';
 import { CircleProjectile } from './components/CircleProjectile';
 import { Particle } from './components/Particle';
 import { Nullable, ProjectileProps } from './index.types';
-import { getGameSettings, DifficultyType, renderGame, resetScore, setDifficulty } from './game';
+import { DifficultyType, getGameSettings, renderGame, resetScore, setDifficulty } from './game';
 import { animate } from './utils/animate';
 import { createStars } from './utils/create-stars';
 
@@ -38,23 +38,27 @@ if (
   const GAME = getGameSettings();
 
   function runGame() {
-    resetScore($scoreElement!);
+    if (GAME.OVER) {
+      resetScore($scoreElement!);
+      player.init();
+      player.setInitialCoordinates();
+    }
+
     GAME.RUN = true;
-    player.init();
-    animateCanvas();
+    GAME.OVER = false;
   }
 
   function startGame(evt: Event) {
     const target = evt.target as HTMLButtonElement;
     const difficulty = (target.dataset.difficulty as DifficultyType) ?? 'EASY';
     setDifficulty(difficulty);
-    $startUpPopup?.classList.remove('popup_opened');
     runGame();
+    $startUpPopup?.classList.remove('popup_opened');
   }
 
   function playAgain() {
-    $endGamePopup?.classList.remove('popup_opened');
     runGame();
+    $endGamePopup?.classList.remove('popup_opened');
   }
 
   function backToMainScreen() {
@@ -90,4 +94,7 @@ if (
   $levelButtonsContainer.addEventListener('click', startGame);
   $playAgainButton.addEventListener('click', playAgain);
   $toMainScreenButton.addEventListener('click', backToMainScreen);
+
+  player.init();
+  animateCanvas();
 }
