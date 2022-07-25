@@ -1,7 +1,7 @@
 import { Coordinates, ISquareProjectile, ProjectileProps } from '../index.types';
-import invader from '../assets/images/invader.png';
+import invader from '../assets/images/invader.svg';
 
-const INVADER_SCALE = 1;
+const INVADER_SCALE = 0.8;
 
 type InvaderProps = {
   ctx: CanvasRenderingContext2D;

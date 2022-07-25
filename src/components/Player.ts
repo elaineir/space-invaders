@@ -1,5 +1,5 @@
 import { Coordinates, ICircleProjectile, ProjectileProps } from '../index.types';
-import spaceship from '../assets/images/spaceship.png';
+import spaceship from '../assets/images/spaceship.svg';
 
 const PLAYER_SCALE = 0.15;
 const BOTTOM_OFFSET = 20;
