@@ -7,9 +7,9 @@ const PLAYER_SPEED = 7;
 const ROTATION_ANGLE = 0.15;
 
 const KEYBOARD_CONTROLS = {
-  LEFT: 'a',
-  RIGHT: 'd',
-  FIRE: ' ',
+  LEFT: 'KeyA',
+  RIGHT: 'KeyD',
+  FIRE: 'Space',
 };
 
 type PlayerProps = {
@@ -67,8 +67,8 @@ export class Player {
     };
   }
 
-  private onKeyDown = ({ key }: KeyboardEvent) => {
-    switch (key) {
+  private onKeyDown = ({ code }: KeyboardEvent) => {
+    switch (code) {
       case KEYBOARD_CONTROLS.LEFT:
         this.keys[KEYBOARD_CONTROLS.LEFT].pressed = true;
         break;
@@ -81,8 +81,8 @@ export class Player {
     }
   };
 
-  private onKeyUp = ({ key }: KeyboardEvent) => {
-    switch (key) {
+  private onKeyUp = ({ code }: KeyboardEvent) => {
+    switch (code) {
       case KEYBOARD_CONTROLS.LEFT:
         this.keys[KEYBOARD_CONTROLS.LEFT].pressed = false;
         break;
